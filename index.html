@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indian City Suggestions</title>
+    <style>
+      body {
+        background-color: black;
+        color: yellow;
+        font-family: Arial, sans-serif;
+      }
+
+      #cityInput {
+        width: 300px;
+        padding: 10px;
+        margin: 0 auto;
+        display: block;
+        background-color: transparent;
+        color: yellow;
+        border: 2px solid yellow;
+        border-radius: 5px;
+        outline: none;
+        text-align: center;
+        font-size: 2vw;
+      }
+
+      .suggestions {
+        display: none;
+        position: absolute;
+        background-color: black;
+        border: 1px solid #ccc;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1;
+        width: 300px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+      }
+      .suggestion-item {
+        padding: 10px;
+        cursor: pointer;
+      }
+      .suggestion-item:hover {
+        background-color: #0008fc;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="cityInput" oninput="showSuggestions()" />
+    <div class="suggestions" id="suggestionBox"></div>
+
+    <script>
+      const cities = [
+        "Mumbai",
+        "Delhi",
+        "Bangalore",
+        "Kolkata",
+        "Chennai",
+        "Hyderabad",
+        "Ahmedabad",
+        "Pune",
+        "Surat",
+        "Jaipur",
+        "Lucknow",
+        "Kanpur",
+        "Nagpur",
+        "Visakhapatnam",
+        "Indore",
+        "Thane",
+        "Bhopal",
+        "Patna",
+        "Vadodara",
+        "Ghaziabad",
+        "Ludhiana",
+        "Agra",
+        "Nashik",
+        "Faridabad",
+        "Meerut",
+        "Rajkot",
+        "Varanasi",
+        "Srinagar",
+        "Aurangabad",
+        "Dhanbad",
+      ];
+
+      function showSuggestions() {
+        const input = document.getElementById("cityInput");
+        const inputValue = input.value.toLowerCase();
+        const suggestionBox = document.getElementById("suggestionBox");
+        suggestionBox.innerHTML = "";
+        const suggestions = cities.filter((city) =>
+          city.toLowerCase().startsWith(inputValue)
+        );
+
+        suggestions.forEach((city) => {
+          const suggestionItem = document.createElement("div");
+          suggestionItem.classList.add("suggestion-item");
+          suggestionItem.textContent = city;
+          suggestionItem.addEventListener("click", () => {
+            input.value = city;
+            suggestionBox.style.display = "none";
+          });
+          suggestionBox.appendChild(suggestionItem);
+        });
+        if (suggestions.length > 0) {
+          suggestionBox.style.display = "block";
+        } else {
+          suggestionBox.style.display = "none";
+        }
+      }
+      document.addEventListener("click", function (event) {
+        const suggestionBox = document.getElementById("suggestionBox");
+        const input = document.getElementById("cityInput");
+        if (event.target !== input && !suggestionBox.contains(event.target)) {
+          suggestionBox.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
