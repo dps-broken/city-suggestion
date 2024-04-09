@@ -1,123 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Indian City Suggestions</title>
-    <style>
-      body {
-        background-color: black;
-        color: yellow;
-        font-family: Arial, sans-serif;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indian City Suggestions</title>
+<style>
+  body {
+    background-color: black;
+    color: yellow;
+    font-family: Arial, sans-serif;
+  }
 
-      #cityInput {
-        width: 300px;
-        padding: 10px;
-        margin: 0 auto;
-        display: block;
-        background-color: transparent;
-        color: yellow;
-        border: 2px solid yellow;
-        border-radius: 5px;
-        outline: none;
-        text-align: center;
-        font-size: 2vw;
-      }
+  #cityInput {
+    width: 300px;
+    padding: 10px;
+    margin: 0 auto;
+    display: block;
+    background-color: transparent;
+    color: yellow;
+    border: 2px solid yellow;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+  }
 
-      .suggestions {
-        display: none;
-        position: absolute;
-        background-color: black;
-        border: 1px solid #ccc;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1;
-        width: 300px;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-      }
-      .suggestion-item {
-        padding: 10px;
-        cursor: pointer;
-      }
-      .suggestion-item:hover {
-        background-color: #0008fc;
-        color: white;
-      }
-    </style>
-  </head>
-  <body>
-    <input type="text" id="cityInput" oninput="showSuggestions()" />
-    <div class="suggestions" id="suggestionBox"></div>
+  .suggestions {
+    display: none;
+    position: absolute;
+    background-color: black;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
+    width: 300px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+  .suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  .suggestion-item:hover {
+    background-color: #0008fc;
+    color: white;
+  }
 
-    <script>
-      const cities = [
-        "Mumbai",
-        "Delhi",
-        "Bangalore",
-        "Kolkata",
-        "Chennai",
-        "Hyderabad",
-        "Ahmedabad",
-        "Pune",
-        "Surat",
-        "Jaipur",
-        "Lucknow",
-        "Kanpur",
-        "Nagpur",
-        "Visakhapatnam",
-        "Indore",
-        "Thane",
-        "Bhopal",
-        "Patna",
-        "Vadodara",
-        "Ghaziabad",
-        "Ludhiana",
-        "Agra",
-        "Nashik",
-        "Faridabad",
-        "Meerut",
-        "Rajkot",
-        "Varanasi",
-        "Srinagar",
-        "Aurangabad",
-        "Dhanbad",
-      ];
+  #cityDescription {
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
 
-      function showSuggestions() {
-        const input = document.getElementById("cityInput");
-        const inputValue = input.value.toLowerCase();
-        const suggestionBox = document.getElementById("suggestionBox");
-        suggestionBox.innerHTML = "";
-        const suggestions = cities.filter((city) =>
-          city.toLowerCase().startsWith(inputValue)
-        );
+<input type="text" id="cityInput" oninput="showSuggestions()">
+<div class="suggestions" id="suggestionBox"></div>
+<div id="cityDescription"></div>
 
-        suggestions.forEach((city) => {
-          const suggestionItem = document.createElement("div");
-          suggestionItem.classList.add("suggestion-item");
-          suggestionItem.textContent = city;
-          suggestionItem.addEventListener("click", () => {
-            input.value = city;
-            suggestionBox.style.display = "none";
-          });
-          suggestionBox.appendChild(suggestionItem);
-        });
-        if (suggestions.length > 0) {
-          suggestionBox.style.display = "block";
-        } else {
-          suggestionBox.style.display = "none";
-        }
-      }
-      document.addEventListener("click", function (event) {
-        const suggestionBox = document.getElementById("suggestionBox");
-        const input = document.getElementById("cityInput");
-        if (event.target !== input && !suggestionBox.contains(event.target)) {
-          suggestionBox.style.display = "none";
-        }
+<script>
+  const cities = [
+    "Mumbai",
+    "Delhi",
+    "Bangalore",
+    "Kolkata",
+    "Chennai",
+    "Hyderabad",
+    "Ahmedabad",
+    "Pune",
+    "Surat",
+    "Jaipur",
+    "Lucknow",
+    "Kanpur",
+    "Nagpur",
+    "Visakhapatnam",
+    "Indore",
+    "Thane",
+    "Bhopal",
+    "Patna",
+    "Vadodara",
+    "Ghaziabad",
+    "Ludhiana",
+    "Agra",
+    "Nashik",
+    "Faridabad",
+    "Meerut",
+    "Rajkot",
+    "Varanasi",
+    "Srinagar",
+    "Aurangabad",
+    "Dhanbad"
+  ];
+
+  const cityDescriptions = {
+    "Mumbai": "Mumbai is the financial, commercial, and entertainment capital of India. It is the most populous city in India and the seventh most populous city in the world.",
+    "Delhi": "Delhi, India's capital territory, is a massive metropolitan area in the country’s north. It is known for its historical landmarks, including the Red Fort, Qutb Minar, and Humayun’s Tomb.",
+    "Bangalore": "Bangalore, officially known as Bengaluru, is the capital of the Indian state of Karnataka. It is known as the 'Silicon Valley of India' due to its role as a major IT hub.",
+    "Kolkata": "Kolkata, formerly known as Calcutta, is the capital of the Indian state of West Bengal. It is known for its cultural heritage, including its literature, music, and arts.",
+    "Chennai": "Chennai, formerly known as Madras, is the capital city of the Indian state of Tamil Nadu. It is known for its beaches, temples, and vibrant culture.",
+    "Hyderabad": "Hyderabad is the capital city of the Indian state of Telangana and de jure capital of Andhra Pradesh. It is known for its rich history, cuisine, and iconic landmarks such as Charminar.",
+    "Ahmedabad": "Ahmedabad is the largest city in the Indian state of Gujarat. It is known for its textile industry, historical monuments such as the Sabarmati Ashram, and vibrant culture.",
+    "Pune": "Pune is a sprawling city in the western Indian state of Maharashtra. It is known for its educational institutions, vibrant nightlife, and cultural heritage.",
+    "Surat": "Surat is a city in the Indian state of Gujarat, known for its diamond and textile industries. It is one of the fastest growing cities in India.",
+    "Jaipur": "Jaipur is the capital of the Indian state of Rajasthan. It is known as the 'Pink City' due to the distinct color of its buildings. Jaipur is famous for its palaces, forts, and vibrant culture.",
+    "Lucknow": "Lucknow is the capital city of the Indian state of Uttar Pradesh. It is known for its rich cultural heritage, historic monuments, and delicious cuisine.",
+    "Kanpur": "Kanpur is a major industrial city located in the Indian state of Uttar Pradesh. It is known for its leather and textile industries.",
+    "Nagpur": "Nagpur is the third largest city and winter capital of the Indian state of Maharashtra. It is known for its oranges, temples, and vibrant culture.",
+    "Visakhapatnam": "Visakhapatnam, often referred to as Vizag, is a port city and the largest city in the Indian state of Andhra Pradesh. It is known for its beaches, natural harbor, and industries.",
+    "Indore": "Indore is the most populous city in the Indian state of Madhya Pradesh. It is known for its food, educational institutions, and growing economy.",
+    "Thane": "Thane is a city in the Indian state of Maharashtra, located just outside Mumbai. It is known for its lakes, historical landmarks, and rapid urbanization.",
+    "Bhopal": "Bhopal is the capital city of the Indian state of Madhya Pradesh. It is known for its beautiful lakes, mosques, and vibrant culture.",
+    "Patna": "Patna is the capital city of the Indian state of Bihar. It is one of the oldest continuously inhabited places in the world and is known for its rich history and cultural heritage.",
+    "Vadodara": "Vadodara, also known as Baroda, is a city in the Indian state of Gujarat. It is known for its palaces, museums, and educational institutions.",
+    "Ghaziabad": "Ghaziabad is a city in the Indian state of Uttar Pradesh, located adjacent to the national capital, Delhi. It is known for its industries, educational institutions, and rapid urbanization.",
+    "Ludhiana": "Ludhiana is a city in the Indian state of Punjab. It is known as the 'Manchester of India' due to its thriving textile industry.",
+    "Agra": "Agra is a city on the banks of the Yamuna river in the Indian state of Uttar Pradesh. It is famous for the iconic Taj Mahal, Agra Fort, and Fatehpur Sikri.",
+    "Nashik": "Nashik is a city in the Indian state of Maharashtra, known for its temples and as a Hindu pilgrimage site. It is also famous for its wine industry.",
+    "Faridabad": "Faridabad is a city in the Indian state of Haryana, located just south of the national capital, Delhi. It is known for its industries, shopping malls, and educational institutions.",
+    "Meerut": "Meerut is a city in the Indian state of Uttar Pradesh. It is known for its historical significance, as it played a crucial role in the Indian Rebellion of 1857.",
+    "Rajkot": "Rajkot is a city in the Indian state of Gujarat. It is known for its traditional sweets, jewelry market, and as the birthplace of Mahatma Gandhi.",
+    "Varanasi": "Varanasi, also known as Benares, is a city on the banks of the river Ganges in the Indian state of Uttar Pradesh. It is one of the oldest continuously inhabited cities in the world and is considered the spiritual capital of India.",
+    "Srinagar": "Srinagar is the largest city and the summer capital of the Indian-administered union territory of Jammu and Kashmir. It is known for its beautiful gardens, houseboats, and handicrafts.",
+    "Aurangabad": "Aurangabad is a city in the Indian state of Maharashtra, known for its historical monuments such as the Ajanta and Ellora caves, Bibi Ka Maqbara, and Aurangabad caves.",
+    "Dhanbad": "Dhanbad is a city in the Indian state of Jharkhand. It is known as the 'Coal Capital of India' due to its rich coal reserves and mining activities."
+  };
+
+  function showSuggestions() {
+    const input = document.getElementById('cityInput');
+    const inputValue = input.value.toLowerCase();
+    const suggestionBox = document.getElementById('suggestionBox');
+    suggestionBox.innerHTML = '';
+    const suggestions = cities.filter(city => city.toLowerCase().startsWith(inputValue));
+
+    suggestions.forEach(city => {
+      const suggestionItem = document.createElement('div');
+      suggestionItem.classList.add('suggestion-item');
+      suggestionItem.textContent = city;
+      suggestionItem.addEventListener('click', () => {
+        input.value = city;
+        suggestionBox.style.display = 'none';
+        showCityDescription(city);
       });
-    </script>
-  </body>
+      suggestionBox.appendChild(suggestionItem);
+    });
+    if (suggestions.length > 0) {
+      suggestionBox.style.display = 'block';
+    } else {
+      suggestionBox.style.display = 'none';
+    }
+  }
+
+  function showCityDescription(city) {
+    const cityDescriptionDiv = document.getElementById('cityDescription');
+    cityDescriptionDiv.textContent = cityDescriptions[city];
+  }
+
+  document.addEventListener('click', function(event) {
+    const suggestionBox = document.getElementById('suggestionBox');
+    const input = document.getElementById('cityInput');
+    if (event.target !== input && !suggestionBox.contains(event.target)) {
+      suggestionBox.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
 </html>
